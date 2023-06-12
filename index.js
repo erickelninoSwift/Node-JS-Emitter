@@ -1,6 +1,23 @@
-const {format} = require('date-fns');
-const { v4: uuid } = require('uuid');
+const myLogEvents = require('./myLogEvents');
 
-console.log(format(new Date(), 'yyyy-MM-dd'));
+const Event = require('events');
 
-console.log(uuid());
+class MyEvent extends Event { };
+
+const myEvent = new MyEvent();
+
+
+
+//  listen to the event
+myEvent.on('log',(mess) =>{
+
+    return myLogEvents(mess);
+});
+
+
+
+setTimeout(() =>{
+   myEvent.emit('log','i was gonna tell your mom');
+},2000);
+
+
