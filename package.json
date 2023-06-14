@@ -2,10 +2,10 @@
   "name": "npm",
   "version": "1.0.0",
   "description": "Learn about package manager",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index.js"
+    "start": "node server",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "Nodejs"
