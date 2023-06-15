@@ -34,21 +34,21 @@ const server = http.createServer((request,response) =>{
 
     console.log(`URL Request: ${request.url}`);
     console.log(`Request Method : ${request.method}`);
-    if(request.url === '/' || request.url === 'index.html')
-    {
-        response.statusCode = 200;
-        console.log(response.statusCode);
+    // if(request.url === '/' || request.url === 'index.html')
+    // {
+    //     response.statusCode = 200;
+    //     console.log(response.statusCode);
 
-        response.setHeader('Content-type','text/html');
-        filepath = path.join(__dirname,'views','index.html');
-         console.log(filepath);
-         console.log(`Extension url: ${path.extname(request.url)}`);
-        fs.readFile(filepath,'utf-8',(error,data) =>{
-            if(error) return error;
-            response.end(data);
+    //     response.setHeader('Content-type','text/html');
+    //     filepath = path.join(__dirname,'views','index.html');
+    //      console.log(filepath);
+    //      console.log(`Extension url: ${path.extname(request.url)}`);
+    //     fs.readFile(filepath,'utf-8',(error,data) =>{
+    //         if(error) return error;
+    //         response.end(data);
            
-        })
-    }
+    //     })
+    // }
 
 
     let extentionUR = path.extname(request.url);
@@ -73,6 +73,17 @@ const server = http.createServer((request,response) =>{
              contentType = 'text/html';
                 
     }
+
+    let filePath2 = path.join(__dirname,'views','index.html');
+    response.statusCode = 200;
+    response.setHeader('Content-type',contentType);
+
+    fs.readFile(filePath2,'utf-8',(error,data) =>{
+        if(error) return error;
+        
+        response.end(data);
+    })
+    
 
 
     console.log(`Extension is : ${extentionUR}`);
