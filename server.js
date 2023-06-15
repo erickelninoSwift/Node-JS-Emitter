@@ -28,6 +28,23 @@ const fspromise = require('fs').promises;
 let filepath;
 
 
+const serverfile = async(filepath,contentType,response) =>{
+
+    try
+    {
+        const data = await fspromise.readFile(filepath,'utf-8');
+        response.writeHead(200,{'content-type':contentType})
+        response.end(data);
+        
+    }catch(error)
+    {
+        console.error(error);
+        response.statusCode = 500;
+        response.end();
+    }
+
+};
+
 const PORT = process.env.PORT || 3500;
 
 const server = http.createServer((request,response) =>{
@@ -78,13 +95,33 @@ const server = http.createServer((request,response) =>{
     response.statusCode = 200;
     response.setHeader('Content-type',contentType);
 
-    fs.readFile(filePath2,'utf-8',(error,data) =>{
-        if(error) return error;
-        
-        response.end(data);
-    })
-    
+    if(!extentionUR && request.url.slice(-1) !== '/')
+    {
+        filePath2+= '.html';
+    }
 
+     const fileExiste = fs.existsSync(filePath2);
+
+     if(fileExiste)
+     {
+        serverfile(filePath2,contentType,response);
+        console.log(path.parse(filePath2));
+    
+     }else
+     {
+        //404 or 301
+       switch(path.parse(filePath2).base)
+       {
+           case 'old.html':
+
+           response.writeHead(301,{'Location': './404.html'})
+           response.end();
+           break;
+       }
+
+       serverfile(path.join(__dirname,'views','404.html'),contentType,response);
+
+     }
 
     console.log(`Extension is : ${extentionUR}`);
     console.log('Content-type : ',contentType);
